@@ -134,13 +134,13 @@ class NumpyDatasetLoader(BaseDatasetLoader):
 
     def load(self):
         import numpy
-        filenames = sorted(glob.glob(expand_path(self.filenames)))
+        from natsort import natsorted
+        filenames = natsorted(glob.glob(expand_path(self.filenames)))
         if self.abs_path:
             filenames = [os.path.abspath(fn) for fn in filenames]
 
-        X = [numpy.vstack(numpy.load(fn)) for fn in filenames]
+        X = [ numpy.load(fn) for fn in filenames ]
 
-        print([len(a[0]) for a in X])
         print("Total trajectories is %d" % len(X))
         print("Data array shape %s" % len(X[0]))
         print("Feature length is %s " % len(X[0][0]))
